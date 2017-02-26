@@ -1,0 +1,3 @@
+For restricted character classes
+- add regex to scan.l: \[[^\]]\]
+- add 

@@ -1,0 +1,64 @@
+For '?' operator
+- add '?' to metachar in scan.l
+- add new production to parse.y
+optional_regex
+:optional_regex '?'	{$$ = build_optional_nfa($1);}
+|primary_regex
+;
+- add new function in parse.y
+NFA build_optional_nfa(NFA nfa) {
+	STATE old_start = get_start_state(nfa);
+	STATE old_accept = get_accept_state(nfa);
+	STATE new_start = new_state();
+	STATE new_accept = new_state();
+	char* regex = concat(get_regex(nfa),"?");
+	free_nfa(nfa);
+	add_epsilon_move(new_start, new_accept);
+	return new_nfa(seq_num, regex, new_start, new_accept);
+}
+
+For '+' operator
+- add '+' to metachar in scan.l
+- add new production to parse.y
+oneormore_regex
+:oneormore_regex '+'	{$$ = build_oneormore_nfa($1);}
+|primary_regex
+;
+- add new function in parse.y
+NFA build_oneormore_nfa(NFA nfa) {
+	STATE old_start = get_start_state(nfa);
+	STATE old_accept = get_accept_state(nfa);
+	STATE new_start = new_state();
+	STATE new_accept = new_state();
+	char* regex = concat(get_regex(nfa),"+");
+	free_nfa(nfa);
+	add_epsilon_move(new_accept, new_start);
+	return new_nfa(seq_num, regex, new_start, new_accept);
+}
+
+For "..." (aka string literals)
+- add new regex to scan.l: string_literal \"[^"}\"
+- add new rule in scan.l:
+{string_literal}	{return strip_quotes(yytext);}
+- add new function to scan.l:
+char* strip_quotes(char* str) {
+	int length = strlen(str);
+	int nq_length = length-2;
+	char* no_quotes = new char[nq_length];
+	strncpy(no_quotes, str+1, nq_length);
+	no_quotes[nq_length] = '\0';
+	return no_quotes;
+}
+- add new token type to parse.y: <yystr> STRING_LITERAL
+- add new production to parse.y
+primary_regex: STRING_LITERAL	{$$ = build_stringliteral_nfa($1);}
+//$1 in this case gives the char* to the string of which to build the NFA
+- add new function to parse.y:
+NFA build_stringliteral_nfa(char* str) {
+	int length = strlen(str);
+	NFA nfa = build_basic_nfa(str[0]);
+	for (int i = 1; i != length; i++) {
+		nfa = build_concat_nfa(nfa,build_basic_nfa(str[i]));
+	}
+	return nfa;
+}
