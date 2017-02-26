@@ -1,3 +1,20 @@
 For restricted character classes
-- add regex to scan.l: \[[^\]]\]
-- add 
+- add regex to scan.l: char_class \[[^\]]\]
+- add rule to scan.l:
+{char_class}	{yylval.yystr = process_char_class(yytext); return CHAR_CLASS;}
+- add function to scan.l:
+char* process_char_class(char* str) {
+	//w.e this is already in
+}
+- add token to parse.y: %token CHAR_CLASS
+- add production to parse.y:
+primary_regex: CHAR_CLASS	{$$ = build_charclass_nfa($1);}
+- add function to parse.y
+NFA build_charclass_nfa(char* str) {
+	int length = strlen(str);
+	int i = 1;
+	NFA nfa = build_basic_nfa(str[0]);
+	while (i != length) {
+		// stuff
+	}
+}
