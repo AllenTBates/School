@@ -2,8 +2,11 @@
 
 using namespace std;
 
+class Matrix {
+    int matrix[10][10];
+};
+
 int main()
 {
-    cout << "Hello world!" << endl;
-    return 0;
+
 }
