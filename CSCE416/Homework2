@@ -1,0 +1,87 @@
+Homework 2
+----------
+
+Chapter 2:
+R19) Yes with type=MX
+R21) No, because Alice may not be one of the 4-top providers to Bob.
+R22) A fellow peer will attempt to 'optimistically unchoke' Alice at random, giving her the opportunity to send/receive chunks.
+R23) An overlay network is a virtual network built on top of an 'underlay' network, which is the physical/logical connections. No it does not include routers. The edges are the peers.
+R26) The UDP has all requests/responses through the same socket, whereas TCP uses a seperate socket for connection requests and data requests. The TCP server would need n+1 sockets.
+R27) TCP is a connection oriented protocol and requires a handshake between client and server (to setup a corresponding socket) before data transfer may occur. For UDP, no handshake is required and the client simply sends data, awaiting a response from the server. If there is no response, the client applicatiopn simply times out.
+P25) Mesh Overlay = n(n-1)/2, Unique Pairs = n/2
+P26) 	a. Yes, due to the optimistally unchoking of him
+	b. He can because increasing the number of machines he has will increase the chance he 		will be randomly chosen to optimistally unchoke. He could then have them upload to only 	eachother.
+P27) Peer 3 asks it's immediate successor who it's successor is in order to update it's own second-successor information. It's first successor is Peer 4, it's second successor is Peer 8.
+P28) 6 will ask 15 "who is 6's p and s?", this message is forwarded until 6's p is found. 6's p will tell 6 who it's p and s are. 6 will figure out it's second s.
+
+Chapter 3:
+R6) Yes, but the application would have to implement reliable data transfer itself.
+R7) Yes. It would know the difference due to the header information: source ip/port.
+R8) No, different sockets due to persitent connections. Yes both sockets have port 80 because they are all associated with the same application. The sockets are uniquely id'ed by their source ip/port attributes, which allows incoming messages from different sources to be directed to the appropriate socket.
+R14)	a. False
+	b. False
+	c. True
+	d. False
+	e. True
+	f. True
+	g. True
+R15)	a. 20 <--- look up
+	b. 110+size of segment B
+P3) Wgt dies udp do 1's complement? why not just sum?
+	With 1's complement, at the receiver end, sum+checksum=111111...1, if any 0s than error
+P4) Gucci
+P5) No, because 1 bit from 2 bytes could both be flipped resulting in an undetectable error.
+P14) In  a  NAK  only  protocol,  the  loss  of  packet 
+x
+is  only  detected  by  the  receiver 
+when packet 
+x+1 
+is receiv
+ed. That is, the receiver receives
+x
+-
+1 
+and then
+x+1, 
+only when
+x+1  is 
+received  does  the  receiver  realizes  that
+x 
+was  missed.  If  there  is  a  long  delay 
+between  the  transmission  of  x  and  the  transmission  of 
+x+1,
+then  it  will  be  a  long  time 
+until 
+x
+can be reco
+vered, under a NAK only protocol. 
+On  the  other  hand,  if  data  is  being  sent  often,  then  recovery  under  a  NAK
+-
+only  scheme 
+could   happen   quickly.   Moreover,   if   errors   are   infrequent,   then   NAKs   are   only 
+occasionally  sent  (when  needed),  and  ACK  are  never  sent 
+–
+a  significant  reduction  in 
+feedback in the NAK
+-
+only case over the ACK
+-
+only case.
+
+P15) W*D/(RTT+D) = P := P*(RTT+D)/D = W
+L/R = 1500*8/10^9 = D
+RTT = 30ms
+
+P22) 	a.[k-4,k-3,k-2,k-1]
+     	  [k-3,k-2,k-1,k]
+	  [k-2,k-1,k,k+1]
+	  [k-1,k,k+1,k+2]
+	  [k,k+1,k+2,k+3]
+	b. k-4 -> k-1 [k-N,k-1]
+
+P27)	a. seq# = 208, the ports
+	b. seq# = 207, the ports
+	c. seq# = 248
+	d. ...
+
+P36) In the case that packets are received out of order
