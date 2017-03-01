@@ -2,28 +2,53 @@
 
 using namespace std;
 
-class test{
+int b;
+
+class TenMatrix {
+	int matrix[10][10];
+
 	public:
-	int count;
-	char c;
-	test() {count = 0; c = ' ';}
-	test(int i, char j) {count = i; c = j;}
-	char* concat();
+	TenMatrix();
+	~TenMatrix();
+	TenMatrix& operator+(int i);
+	bool operator==(TenMatrix& comp);
+	void printM();
 };
+
+TenMatrix::TenMatrix() {
+    for (int i = 0; i != 10; i++)
+        for (int j = 0; j != 10; j++)
+            matrix[i][j] = 0;
+}
+
+TenMatrix::~TenMatrix() {}
+
+TenMatrix& TenMatrix::operator+(int a) {
+    for (int i = 0; i != 10; i++)
+        for (int j = 0; j != 10; j++)
+            matrix[i][j] += a;
+    return *this;
+}
+
+bool TenMatrix::operator==(TenMatrix& comp) {
+    for (int i = 0; i != 10; i++)
+        for (int j = 0; j != 10; j++)
+            if (matrix[i][j] != comp.matrix[i][j])
+                return false;
+    return true;
+}
+
+void TenMatrix::printM() {
+    for (int i = 0; i != 10; i++) {
+        for (int j = 0; j != 10; j++)
+            cout << matrix[i][j] << " ";
+        cout << endl;
+    }
+}
+
 int main() {
-	test a;
-	a.count = 5;
-	a.c = 'b';
-	char* str = a.concat();
-	cout << str;
-	delete[] str;
+    TenMatrix tm;
+    TenMatrix tm2;
+    if (tm == tm2)
+        cout << "AHHH";
 }
-char* test::concat() {
-	char* str = new char[count+1];
-	for (int i = 0; i != count; i++)
-		str[i] = c;
-	str[count] = '\0';
-	return str;
-}
-
-
