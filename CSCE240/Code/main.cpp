@@ -2,11 +2,28 @@
 
 using namespace std;
 
-class Matrix {
-    int matrix[10][10];
+class test{
+	public:
+	int count;
+	char c;
+	test() {count = 0; c = ' ';}
+	test(int i, char j) {count = i; c = j;}
+	char* concat();
 };
-
-int main()
-{
-
+int main() {
+	test a;
+	a.count = 5;
+	a.c = 'b';
+	char* str = a.concat();
+	cout << str;
+	delete[] str;
 }
+char* test::concat() {
+	char* str = new char[count+1];
+	for (int i = 0; i != count; i++)
+		str[i] = c;
+	str[count] = '\0';
+	return str;
+}
+
+
