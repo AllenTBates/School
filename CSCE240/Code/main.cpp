@@ -2,28 +2,18 @@
 
 using namespace std;
 
-class test{
-	public:
-	int count;
-	char c;
-	test() {count = 0; c = ' ';}
-	test(int i, char j) {count = i; c = j;}
-	char* concat();
+class A {
+public:
+    int size;
+    A ():size(0) {cout << "C" << endl;}
+    A (A& a) :size(a.size) {cout << "P\n";}
+    ~A() {cout << "D" << endl;}
 };
+
+A& foo(A arg1) {return arg1;}
+
 int main() {
-	test a;
-	a.count = 5;
-	a.c = 'b';
-	char* str = a.concat();
-	cout << str;
-	delete[] str;
+    int* a = new int[4];
+    for (int i = 0; i != 4; i++) {a[i] = 3*i;}
+    cout << ++a[0];
 }
-char* test::concat() {
-	char* str = new char[count+1];
-	for (int i = 0; i != count; i++)
-		str[i] = c;
-	str[count] = '\0';
-	return str;
-}
-
-
