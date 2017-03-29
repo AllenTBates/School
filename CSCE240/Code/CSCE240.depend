@@ -2,10 +2,10 @@
 1446667744 source:c:\users\daniel ruegamer\documents\github\schoolprojects\csce240\main.cpp
 	<iostream>
 
-1487859382 source:c:\users\daniel ruegamer\documents\github\school\csce240\code\nstring.cpp
+1487862982 source:c:\users\daniel ruegamer\documents\github\school\csce240\code\nstring.cpp
 	"NString.h"
 
-1487859246 c:\users\daniel ruegamer\documents\github\school\csce240\code\nstring.h
+1487862846 c:\users\daniel ruegamer\documents\github\school\csce240\code\nstring.h
 	<string.h>
 
 1488336989 source:c:\users\daniel\documents\github\schoolprojects\csce240\code\nstring.cpp
@@ -13,4 +13,10 @@
 
 1488336989 c:\users\daniel\documents\github\schoolprojects\csce240\code\nstring.h
 	<string.h>
+
+1490711346 source:c:\users\daniel ruegamer\documents\github\school\csce240\code\main.cpp
+	<iostream>
+
+1490297204 c:\users\daniel ruegamer\documents\github\school\csce240\code\unsignedlargeint.h
+	<iostream>
 

@@ -22,6 +22,10 @@
 		</Compiler>
 		<Unit filename="NString.cpp" />
 		<Unit filename="NString.h" />
+		<Unit filename="UnsignedLargeInt.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="UnsignedLargeInt.h" />
 		<Unit filename="main.cpp" />
 		<Extensions>
 			<code_completion />
