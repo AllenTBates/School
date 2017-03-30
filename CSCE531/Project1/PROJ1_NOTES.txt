@@ -1,0 +1,70 @@
+const volatile int a = 10;
+			a, b, c;
+			a = 1, b, c = 7;
+
+int a[2][2] = { {1, 2} , {3, 4} };
+
+int a[2] = { 1 , 2 };
+
+[1,0]
+
+get_size_basic(TYINT)
+
+$$ = $<y_bucket>0;
+
+TYSIGNEDINT
+TYDOUBLE
+TYUNSIGNEDINT
+TYCHAR
+^^^
+types.h
+
+backend.h
+
+CONST_REC our_record = $1;
+int value = our_record->u.double_val
+
+out_record->u.int_val
+
+our_record->u.double_val
+
+switch (our_record->type)
+	case (CONST_REC_INT):
+		// handle it
+	case (CONST_REC_DOUBLE):
+		// handle it
+
+
+{
+	TYPETAG tag = ty_query($<y_type>0)
+	if (tag != TYARRAY)
+		// give error
+	else
+		int number_of_elements;
+		ty_query_array($<y_type>0, DIM_FLAG, &number_of_elements;
+		$<y_uint>$ = number_of_elements
+
+
+ty_query_array($<y_type>0, return value, return value)
+TYPE basic type 
+
+
+
+
+{ TYPE element_type = ty_query_array($<y_type>0, ..., ...);
+  $<y_type>$ = element_type;
+ }
+
+
+
+
+
+
+
+
+
+
+
+
+
+

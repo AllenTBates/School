@@ -13,8 +13,8 @@ public:
 
     UnsignedLargeInt& operator+=(const UnsignedLargeInt& rhs);
     UnsignedLargeInt& operator*=(const UnsignedLargeInt& rhs);
-    UnsignedLargeInt operator++();
-    UnsignedLargeInt operator++(int IGNORE_ME);
+    UnsignedLargeInt operator++(); // pre-incremenet
+    UnsignedLargeInt operator++(int IGNORE_ME); // post-increment
     bool operator!();
 
     friend UnsignedLargeInt operator+(const UnsignedLargeInt& lhs, const UnsignedLargeInt& rhs);
