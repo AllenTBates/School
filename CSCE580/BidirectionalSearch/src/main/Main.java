@@ -19,45 +19,69 @@ public class Main {
 		openB.add(goal);
 
 		while (!openF.isEmpty() && !openB.isEmpty()) {
-
+			int prminF = prmin(openF);
+			int prminB = prmin(openB);
+			int C = getC(prminF, prminB);
+			
+			if (U <= C)
+				return U;
+			
+			if (C == prminF) {
+				// Expand in the forward direction
+			} else /* C == prminB */ {
+				// Expand in the backward direction
+			}
 		}
 
 		return Integer.MAX_VALUE;
 	}
 
 	// Gives the priority of the given node
-	private static int priorityOfNodeN(final GraphNode n) {
-		// TODO: returns max(f(n),2*g(n))
-		return 0;
+	// pr(n) = max(f(n),2*g(n))
+	private static int priority(final GraphNode n) {
+		int f = f(n);
+		int gtimes2 = n.gValue * 2;
+		return (f > gtimes2) ? f : gtimes2;
 	}
+	
+	// Gives the fvalue of the given node
+	// f(n) = h(n) + g(n)
+	private static int f(final GraphNode n) {
+		return n.hueristic + n.gValue;
+	}
+	
+	// Gives the minimum priority within the given open list
+	private static int prmin(final List<GraphNode> openList) {
+		int min = Integer.MAX_VALUE;
 
-	// FIXME: This should maybe just return a node for simplicity
-	private static int minPriority(final List<GraphNode> nodes) {
-		int min = Integer.MIN_VALUE;
-
-		for (final GraphNode n : nodes)
-			if (n.cost > min)
-				min = n.cost;
+		for (final GraphNode n : openList) {
+			int currentPriority = priority(n);
+			if (currentPriority < min)
+				min = currentPriority;
+		}
 
 		return min;
 	}
 
-	private static GraphNode C() {
-		return null;
+	// Description: Gives the C value of the current iteration
+	// C = min(prminF,prminB)
+	private static int getC(final int prminF, final int prminB) {
+		return (prminF < prminB) ? prminF : prminB;
 	}
 
 	private static class GraphNode {
 		public final List<GraphNode> children = new LinkedList<GraphNode>();
-		public final int cost;
-
-		public GraphNode(final int cost) {
-			this.cost = cost;
-		}
-
-		public GraphNode(final int cost, final GraphNode... children) {
-			this.cost = cost;
+		public int cost;
+		public int hueristic;
+		public int gValue;
+		
+		public void addChildren(final GraphNode... children) {
 			for (final GraphNode c : children)
 				this.children.add(c);
+		}
+		
+		public void addChildren(final List<GraphNode> children) {
+			addChildren(children.toArray(new GraphNode[children.size()]));
 		}
 	}
 }
