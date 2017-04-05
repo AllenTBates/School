@@ -11,16 +11,16 @@ public class Main {
 	}
 
 	private static int MM (final GraphNode start, final GraphNode goal) {
-		List<GraphNode> openF = new LinkedList<GraphNode>();
-		List<GraphNode> openB = new LinkedList<GraphNode>();
+		List<GraphNode> OpenF = new LinkedList<GraphNode>();
+		List<GraphNode> OpenB = new LinkedList<GraphNode>();
 		int U = Integer.MAX_VALUE;
 
-		openF.add(start);
-		openB.add(goal);
+		OpenF.add(start);
+		OpenB.add(goal);
 
-		while (!openF.isEmpty() && !openB.isEmpty()) {
-			int prminF = prmin(openF);
-			int prminB = prmin(openB);
+		while (!OpenF.isEmpty() && !OpenB.isEmpty()) {
+			int prminF = prmin(OpenF);
+			int prminB = prmin(OpenB);
 			int C = getC(prminF, prminB);
 			
 			if (U <= C)
