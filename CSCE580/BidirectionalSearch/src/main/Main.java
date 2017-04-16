@@ -1,262 +1,59 @@
 package main;
 
-import java.util.HashSet;
-import java.util.Set;
+import main.MM.MMNode;
+import main.MM.MMEdge;
 
 public class Main {
 
 	public static void main(String[] args) {
-		// TODO: Generate Graph
-		// TODO: call MM
-	}
-
-	private static int MM (final Node start, final Node goal) {
-		Set<Node> OpenF = new HashSet<Node>();
-		Set<Node> OpenB = new HashSet<Node>();
-		Set<Node> ClosedF = new HashSet<Node>();
-		Set<Node> ClosedB = new HashSet<Node>();
-		int U = Integer.MAX_VALUE;
-
-		OpenF.add(start);
-		OpenB.add(goal);
-
-		while (!OpenF.isEmpty() && !OpenB.isEmpty()) {
-			int prminF = prminF(OpenF);
-			int prminB = prminB(OpenB);
-			int C = getC(prminF, prminB);
-			
-			if (U <= C)
-				return U;
-			
-			if (C == prminF) {
-				// Expand in the forward direction
-				final Node n = moveN_F(prminF, OpenF, ClosedF);
-				
-				for (final Node c : n.getChildren()) {
-					if (union(OpenF, ClosedF).contains(c) &&
-							c.gValueF <= (n.gValueF + n.getCostTo(c)))
-						continue;
-					
-					if (union(OpenF, ClosedF).contains(c)) {
-						OpenF.remove(c);
-						ClosedF.remove(c);
-					}
-					
-					c.gValueF = n.gValueF + n.getCostTo(c);
-					OpenF.add(c);
-					
-					if (OpenB.contains(c))
-						U = getU(U, c.gValueF + c.gValueB);
-				}
-			} else if (C == prminB) {
-				// Expand in the backward direction
-				final Node n = moveN_B(prminB, OpenB, ClosedB);
-				
-				for (final Node c : n.getChildren()) {
-					if (union(OpenB, ClosedB).contains(c) &&
-							c.gValueB <= (n.gValueB + n.getCostTo(c)))
-						continue;
-					
-					if (union(OpenB, ClosedB).contains(c)) {
-						OpenB.remove(c);
-						ClosedB.remove(c);
-					}
-					
-					c.gValueB = n.gValueB + n.getCostTo(c);
-					OpenB.add(c);
-					
-					if (OpenF.contains(c))
-						U = getU(U, c.gValueB + c.gValueF);
-				}
-			} else {
-				System.err.println("Something has gone horribly wrong");
-				System.exit(-1);
-			}
-		}
-
-		return Integer.MAX_VALUE;
-	}
-
-	// Gives the priority of the given node in the forward direction
-	// pr(n) = max(f(n),2*g(n))
-	private static int prF(final Node n) {
-		int f = fF(n);
-		int gtimes2 = n.gValueF * 2;
-		return (f > gtimes2) ? f : gtimes2;
+		classGraphMM();
 	}
 	
-	// Gives the priority of the given node in the backward direction
-	// pr(n) = max(f(n),2*g(n))
-	private static int prB(final Node n) {
-		int f = fB(n);
-		int gtimes2 = n.gValueB * 2;
-		return (f > gtimes2) ? f : gtimes2;
-	}
-	
-	// Gives the fvalue of the given node in the forward direction
-	// f(n) = h(n) + g(n)
-	private static int fF(final Node n) {
-		return n.hueristicF + n.gValueF;
-	}
-	
-	// Gives the fvalue of the given node in the backward direction
-	// f(n) = h(n) + g(n)
-	private static int fB(final Node n) {
-		return n.hueristicB + n.gValueB;
-	}
-	
-	// Gives the minimum priority within the given open Set
-	private static int prminF(final Set<Node> openSet) {
-		int min = Integer.MAX_VALUE;
+	// Start is a, goal is g
+	private static void classGraphMM() {
+		MMNode a = new MMNode(11,0);
+		MMNode b = new MMNode(13,2);
+		MMNode c = new MMNode(8,5);
+		MMNode d = new MMNode(5,8);
+		MMNode e = new MMNode(17,6);
+		MMNode f = new MMNode(17,6);
+		MMNode g = new MMNode(0,11);
+		
+		MMEdge atob = new MMEdge(2,b);
+		MMEdge atoc = new MMEdge(6,c);
+		MMEdge atod = new MMEdge(10,d);
+		a.addOutgoingEdges(atob, atoc, atod);
+		
+		MMEdge btoa = new MMEdge(2,a);
+		MMEdge btoe = new MMEdge(4,e);
+		MMEdge btof = new MMEdge(4,f);
+		b.addOutgoingEdges(btoa, btoe, btof);
 
-		for (final Node n : openSet) {
-			int currentPriority = prF(n);
-			if (currentPriority < min)
-				min = currentPriority;
-		}
+		MMEdge ctoa = new MMEdge(6,a);
+		MMEdge ctod = new MMEdge(5,d);
+		c.addOutgoingEdges(ctoa, ctod);
 
-		return min;
-	}
-	
-	// Gives the minimum priority within the given open Set
-	private static int prminB(final Set<Node> openSet) {
-		int min = Integer.MAX_VALUE;
-
-		for (final Node n : openSet) {
-			int currentPriority = prB(n);
-			if (currentPriority < min)
-				min = currentPriority;
-		}
-
-		return min;
-	}
-
-	// Description: Gives the C value of the current iteration
-	// C = min(prminF,prminB)
-	private static int getC(final int prminF, final int prminB) {
-		return (prminF < prminB) ? prminF : prminB;
-	}
-	
-	private static int getU(final int prevU, final int sum) {
-		return (prevU < sum) ? prevU : sum;
-	}
-	
-	// Gives the node n such that:
-	//	- n is in OpenF
-	//	- priority(n) == prminF
-	private static Node moveN_F(final int prmin, final Set<Node> openSet, final Set<Node> closeSet) {
-		for (final Node o : openSet)
-			if (prF(o) == prmin) {
-				openSet.remove(o);
-				closeSet.add(o);
-				return o;
-			}
+		MMEdge dtoa = new MMEdge(10,a);
+		MMEdge dtoc = new MMEdge(3,c);
+		MMEdge dtog = new MMEdge(5,g);
+		c.addOutgoingEdges(dtoa, dtoc, dtog);
 		
-		return null;
-	}
-	
-	// Gives the node n such that:
-	//	- n is in OpenF
-	//	- priority(n) == prminF
-	private static Node moveN_B(final int prmin, final Set<Node> openSet, final Set<Node> closeSet) {
-		for (final Node o : openSet)
-			if (prB(o) == prmin) {
-				openSet.remove(o);
-				closeSet.add(o);
-				return o;
-			}
+		MMEdge etob = new MMEdge(4,b);
+		MMEdge etof = new MMEdge(3,f);
+		e.addOutgoingEdges(etob, etof);
 		
-		return null;
-	}
-	
-	private static Set<Node> union(final Set<Node> Set1, final Set<Node> Set2) {
-		final Set<Node> union = new HashSet<Node>();
+		MMEdge ftob = new MMEdge(4,b);
+		MMEdge ftoe = new MMEdge(3,e);
+		f.addOutgoingEdges(ftob, ftoe);
 		
-		for (final Node n : Set1)
-			union.add(n);
-			
-		for (final Node n : Set2)
-			if (!union.contains(n))
-				union.add(n);
+		MMEdge gtod = new MMEdge(5,d);
+		g.addOutgoingEdges(gtod);
 		
-		return union;
-	}
-
-	private static class Node {
-		public final Set<Edge> outgoing = new HashSet<Edge>();
-		public int hueristicF;
-		public int hueristicB;
-		public int gValueF;
-		public int gValueB;
+		final MM mm = new MM();
 		
-		public void addOutgoingEdges(final Edge... outgoing) {
-			for (final Edge c : outgoing)
-				this.outgoing.add(c);
-		}
+		int minCost = mm.run(a, g);
+		int nodesExpanded = mm.nodesExpanded;
 		
-		public void addOutgoingEdges(final Set<Edge> outgoing) {
-			addOutgoingEdges(outgoing.toArray(new Edge[outgoing.size()]));
-		}
-		
-		public Set<Node> getChildren() {
-			final Set<Node> children = new HashSet<Node>();
-			
-			for (final Edge e : outgoing)
-				children.add(e.destination);
-			
-			return children;
-		}
-		
-		public int getCostTo(final Node destination) {
-			for (final Edge e : outgoing)
-				if (e.destination.equals(destination))
-					return e.cost;
-			
-			return -1;
-		}
-		
-		@Override
-		public boolean equals(Object obj) {
-			if (this == obj)
-				return true;
-			if (!(obj instanceof Node))
-				return false;
-			
-			final Node comp = (Node)obj;
-		
-			if (this.hueristicF != comp.hueristicF)
-				return false;
-			if (this.gValueF != comp.gValueF)
-				return false;
-			if (this.hueristicB != comp.hueristicB)
-				return false;
-			if (this.gValueB != comp.gValueB)
-				return false;
-			if (!this.outgoing.equals(comp.outgoing))
-				return false;
-			
-			return true;
-		}
-	}
-	
-	private static class Edge {
-		public int cost;
-		public Node destination;
-		
-		public boolean equals(Object obj) {
-			if (this == obj)
-				return true;
-			if (!(obj instanceof Edge))
-				return false;
-			
-			final Edge comp = (Edge)obj;
-			
-			if (this.cost != comp.cost)
-				return false;
-			if (!this.destination.equals(comp.destination))
-				return false;
-			
-			return true;
-		}
+		System.out.println("MinCost = " + minCost + "\nNodes Expanded = " + nodesExpanded);
 	}
 }
